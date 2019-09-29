@@ -1,7 +1,7 @@
 #-*- coding:UTF_8 -*-
 import re
 import json
-
+import string
 
 client={
     '姓名':'',
