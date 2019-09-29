@@ -26,41 +26,65 @@ client['手机']=telnum
 addr=re.sub(r'\d{11}','',n0[1])#删去号码得到纯地址字符串
 
 #一级（省、直辖市、自治区）
-zxcity=['北京','上海','天津','重庆']
-if '省' not in addr:
-    if '内蒙古' in addr:
-        p='内蒙古'+'自治区'
-        addr=addr.replace(p,'',1)#删去一级地址
-    elif '广西'in addr:
-        p='广西'+'壮族自治区'
-        addr=addr.replace(p,'',1)
-    elif '宁夏'in addr:
-        p='宁夏'+'回族自治区'
-        addr=addr.replace(p,'',1)
-    elif '新疆'in addr:
-        p='新疆'+'维吾尔自治区'
-        addr=addr.replace(p,'',1)
-    elif '西藏' in addr:
-        p='西藏'+'自治区'
-        addr=addr.replace(p,'',1)
-    elif '黑龙江'in addr:
-        p='黑龙江'+'省'
-        addr=addr.replace(p,'',1)
-    elif '北京市'or'北京' in addr:
-        p='北京'
-    elif '上海市'or'上海' in addr:
-        p='上海市'
-    elif '重庆市'or'重庆' in addr:
-        p='重庆'
-    elif '天津市'or'天津' in addr:
-        p='天津' 
-    else:
-        p=addr[:2]+'省'
-        addr=addr.replace(p,'',1)
-elif '省' in addr:
-    p=re.sub(r'省.*$',"", addr)
+if '北京' in addr or'天津' in addr or'上海' in addr or'重庆' in addr:
+    for di in ['北京','天津','上海','重庆']:
+        if di in addr:
+            p=di
+            break
+    addr=re.sub(p,'',addr)
+    if addr[0]=='市':
+        addr=re.sub(addr[0],'',addr)
+        
+elif '自治区' in addr:
+    p=re.sub(r'自治区.*$',"", addr)#提取自治区
+    p+='自治区'
+    addr=re.sub(p,'',addr)
+        
+elif '省' in address:
+    p=re.sub(r'省.*$',"",addr)
     p+='省'
-    addr=addr.replace(p,'',1)
+    addr=re.sub(p,'',addr)
+        
+else:
+    if '内蒙古' in addr:
+        p='内蒙古自治区'
+        addr=re.sub('内蒙古','',addr)
+        
+    elif '新疆维吾尔' in addr:
+        p='新疆维吾尔自治区'
+        addr=re.sub('新疆维吾尔','',addr)
+            
+    elif '新疆' in address:
+        p='新疆维吾尔自治区'
+        addr=re.sub('新疆','',addr)
+                           
+    elif '广西壮族' in addr:
+        p='广西壮族自治区'
+        addr=re.sub('广西壮族','',addr)
+            
+    elif '广西' in addr:
+        p='广西壮族自治区'
+        addr=re.sub('广西','',addr)
+            
+    elif '宁夏回族' in addr:
+        p='宁夏回族古自治区'
+        addr=re.sub('宁夏回族','',addr)
+            
+    elif '宁夏' in address:
+        p='宁夏回族古自治区'
+        addr=re.sub('宁夏','',addr)
+            
+    elif '西藏' in addr:
+        p='西藏古自治区'
+        addr=re.sub('西藏','',addr)
+     
+    elif '黑龙江' in addr:
+        p='黑龙江省'
+        addr=re.sub('黑龙江','',addr)
+            
+    else:
+            p=addr[:2]+'省'
+            addr=re.sub(addr[:2],'',addr)
 client['地址'].append(p)
 
 #二级
