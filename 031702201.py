@@ -1,4 +1,4 @@
-# encoding=utf-8
+#-*- coding:UTF_8 -*-
 import re
 import json
 
@@ -60,7 +60,7 @@ if '省' not in addr:
     else:
         p=addr[:2]+'省'
         addr=addr.replace(p,'',1)
-else:
+elif '省' in addr:
     p=re.sub(r'省.*$',"", addr)
     p+='省'
     addr=addr.replace(p,'',1)
@@ -132,6 +132,5 @@ elif dif=='2' or '3':#继续划分到五级以后
     seven=addr
     client['地址'].append(seven)
 
-json_str=json.dumps(client,ensure_ascii=False,indent=4)
-print(json_str)
-        
+json1=json.dumps(client,ensure_ascii=False)
+print(json1)
