@@ -2,7 +2,6 @@
 import re
 import json
 import string
-
 client={
     '姓名':'',
     '手机':'',
@@ -22,10 +21,12 @@ client['姓名']=name
 
 #获取电话号码
 telnum=re.findall(r'\d{11}',n0[1])
+telnum=telnum[0]#将号码转化为字符串
 client['手机']=telnum
 addr=re.sub(r'\d{11}','',n0[1])#删去号码得到纯地址字符串
 
 #一级（省、直辖市、自治区）
+zxcity=['北京','上海','天津','重庆']
 if '省' not in addr:
     if '内蒙古' in addr:
         p='内蒙古'+'自治区'
@@ -42,21 +43,17 @@ if '省' not in addr:
     elif '西藏' in addr:
         p='西藏'+'自治区'
         addr=addr.replace(p,'',1)
-    elif '北京' in addr:
-        p='北京'
-        addr=addr.replace(p,'',1)
-    elif '上海' in addr:
-        p='上海'
-        addr=addr.replace(p,'',1)
-    elif '天津' in addr:
-        p='天津'
-        addr=addr.replace(p,'',1)
-    elif '重庆' in addr:
-        p='重庆'
-        addr=addr.replace(p,'',1)
     elif '黑龙江'in addr:
         p='黑龙江'+'省'
         addr=addr.replace(p,'',1)
+    elif '北京市'or'北京' in addr:
+        p='北京'
+    elif '上海市'or'上海' in addr:
+        p='上海市'
+    elif '重庆市'or'重庆' in addr:
+        p='重庆'
+    elif '天津市'or'天津' in addr:
+        p='天津' 
     else:
         p=addr[:2]+'省'
         addr=addr.replace(p,'',1)
@@ -67,7 +64,7 @@ elif '省' in addr:
 client['地址'].append(p)
 
 #二级
-second=['市','自治州','盟','区']
+second=['市','自治州','盟','地区']
 for two in second:
     if two in addr:
         ci=re.sub(two+'.*$',"", addr)
@@ -76,7 +73,6 @@ for two in second:
         break
     else:
         ci=""
-
 client['地址'].append(ci)
 
 #三级
@@ -89,11 +85,10 @@ for three in third:
         break
     else:
         co=""
-
 client['地址'].append(co)
 
 #四级
-forth=['街道','镇','乡','民族乡','苏木','民族苏木','区']
+forth=['街道','镇','乡','民族乡','苏木','民族苏木']
 for four in forth:
     if four in addr:
         town=re.sub(four+'.*$',"", addr)
